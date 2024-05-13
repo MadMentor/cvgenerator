@@ -13,39 +13,38 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="experience")
+@Table(name = "experience")
 public class Experience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer experience_id;
 
-    @Column(name = "company_name",nullable = false,length = 100)
+    @Column(name = "company_name", nullable = false, length = 100)
     private String companyName;
 
-
-    @Column(name = "company_website",nullable = false,length = 100)
+    @Column(name = "company_website", nullable = false, length = 100)
     private String companyWebsite;
 
-    @Column(name = "company_address",nullable = false,length = 100)
+    @Column(name = "company_address", nullable = false, length = 100)
     private String address;
 
-    @Column(name = "contact",nullable = false,length = 100)
+    @Column(name = "contact", nullable = false, length = 100)
     private String contact;
 
-    @Column(name = "start_date",nullable = false,length = 100)
+    @Column(name = "start_date", nullable = false, length = 100)
     private LocalDate startDate;
 
-    @Column(name = "end_date",length = 100)
+    @Column(name = "end_date", length = 100)
     private LocalDate endDate;
 
-    @Column(name = "position",nullable = false,length = 100)
+    @Column(name = "position", nullable = false, length = 100)
     private String position;
 
-    @Column(name = "job_role",nullable = false,length = 100)
+    @Column(name = "job_role", nullable = false, length = 100)
     private String jobRole;
 
-    @Column(name = "is_current",nullable = false,length = 100)
+    @Column(name = "is_current", nullable = false, length = 100)
     private Boolean isCurrent;
 
 

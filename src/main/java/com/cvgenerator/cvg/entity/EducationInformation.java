@@ -26,9 +26,9 @@ public class EducationInformation {
     @Column(length = 9)
     @Enumerated(EnumType.STRING)
     private Level level;
-    @Column(name = "level_detail",nullable = false,length = 100)
+    @Column(name = "level_detail", nullable = false, length = 100)
     private String levelDetail;
-    @Column(name = "division_or_grade",nullable = false,length = 12)
+    @Column(name = "division_or_grade", nullable = false, length = 12)
     private String DivisionOrGrade;
     @Column(name = "from_year_date", nullable = false)
     private LocalDate fromYearDate;
