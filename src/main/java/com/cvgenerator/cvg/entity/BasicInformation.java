@@ -17,25 +17,35 @@ public class BasicInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
+
     @Column(name = "middle_name", length = 30)
     private String middleName;
+
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
+
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
+
     @Column(length = 6)
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
     @Column(name = "religion", length = 20)
     private String religion;
+
     @Column(name = "nationality", nullable = false, length = 30)
     private String nationality;
+
     @Column(name = "current_address", nullable = false, length = 150)
     private String currentAddress;
+
     @Column(name = "background", nullable = false, length = 1000)
     private String background;
+
     @Column(name = "photo_path", nullable = false, length = 200)
     private String photoPath;
 }

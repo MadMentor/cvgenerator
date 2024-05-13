@@ -22,6 +22,7 @@ public class ReachMeAt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "contact_type", nullable = false)
     private ContactType contactType;
 
