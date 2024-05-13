@@ -4,7 +4,6 @@ import com.cvgenerator.cvg.enums.EducationType;
 import com.cvgenerator.cvg.enums.Level;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 import java.time.LocalDate;
 
@@ -47,7 +46,7 @@ public class EducationInformation {
     @JoinColumn(
             name = "basic_info_id",
             foreignKey = @ForeignKey(
-                    name = "fk_educationInformation_id"
+                    name = "fk_educationinformation_id"
             )
     )
     private BasicInformation basicInformation;

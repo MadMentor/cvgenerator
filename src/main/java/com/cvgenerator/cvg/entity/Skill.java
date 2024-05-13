@@ -26,7 +26,7 @@ public class Skill {
             targetEntity = BasicInformation.class
     )
     @JoinColumn(
-            name = "basic_info_id",
+            name = "basic_id",
             foreignKey = @ForeignKey(
                     name = "fk_skill_id"
             )
