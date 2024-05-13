@@ -30,6 +30,6 @@ public class ReachMeAt {
     private String details;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BasicInformation.class)
-    @JoinColumn(name = "basic_info_id", foreignKey = @ForeignKey(name = "fk_basicinfo_id"))
+    @JoinColumn(name = "basic_id", foreignKey = @ForeignKey(name = "fk_reachmeat_id"))
     private BasicInformation basicInformationId;
 }
