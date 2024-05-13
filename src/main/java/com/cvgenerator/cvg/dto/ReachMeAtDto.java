@@ -1,7 +1,8 @@
 package com.cvgenerator.cvg.dto;
 
-import com.cvgenerator.cvg.entity.BasicInformation;
 import com.cvgenerator.cvg.enums.ContactType;
+import com.cvgenerator.cvg.service.ReachMeAtService;
+import com.cvgenerator.cvg.service.impl.ReachMeAtServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +23,5 @@ public class ReachMeAtDto {
 
     private String details;
 
-    private BasicInformation basicInformationId;
+    private Integer basicInformationId;
 }

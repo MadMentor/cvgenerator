@@ -2,6 +2,7 @@ package com.cvgenerator.cvg.service.impl;
 
 import com.cvgenerator.cvg.dto.ReachMeAtDto;
 import com.cvgenerator.cvg.entity.ReachMeAt;
+import com.cvgenerator.cvg.repo.BasicInformationRepo;
 import com.cvgenerator.cvg.repo.ReachMeAtRepo;
 import com.cvgenerator.cvg.service.ReachMeAtService;
 import com.cvgenerator.cvg.validation.ReachMeAtValidation;
@@ -20,9 +21,11 @@ import java.util.Map;
 @Service
 public class ReachMeAtServiceImpl implements ReachMeAtService {
     private final ReachMeAtRepo reachMeAtRepo;
+    private final BasicInformationRepo basicInformationRepo;
 
-    public ReachMeAtServiceImpl(ReachMeAtRepo reachMeAtRepo) {
+    public ReachMeAtServiceImpl(ReachMeAtRepo reachMeAtRepo, BasicInformationRepo basicInformationRepo) {
         this.reachMeAtRepo = reachMeAtRepo;
+        this.basicInformationRepo = basicInformationRepo;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
             entity.setId(reachMeAtDto.getId());
             entity.setContactType(reachMeAtDto.getContactType());
             entity.setDetails(reachMeAtDto.getDetails());
-            entity.setBasicInformationId(reachMeAtDto.getBasicInformationId());
+            entity.setBasicInformationId(basicInformationRepo.findById(reachMeAtDto.getBasicInformationId()).get());
             reachMeAtRepo.save(entity);
             log.info("ReachMeAt saved with id: {}", entity.getId());
         } else {
@@ -47,7 +50,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
     public ReachMeAtDto findById(Integer integer) {
         ReachMeAt entity = reachMeAtRepo.findById(integer).get();
         ReachMeAtDto dto = new ReachMeAtDto(entity.getId(), entity.getContactType(), entity.getDetails(),
-                entity.getBasicInformationId());
+                entity.getBasicInformationId().getId());
         return dto;
     }
 
@@ -57,7 +60,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
         List<ReachMeAtDto> reachMeAtDtoList = new ArrayList<>();
         for (ReachMeAt reachMeAt : reachMeAtList) {
             reachMeAtDtoList.add(new ReachMeAtDto(reachMeAt.getId(), reachMeAt.getContactType(),
-                    reachMeAt.getDetails(), reachMeAt.getBasicInformationId()));
+                    reachMeAt.getDetails(), reachMeAt.getBasicInformationId().getId()));
         }
         return reachMeAtDtoList;
     }
