@@ -10,7 +10,8 @@ import java.util.Map;
 @Slf4j
 @Component
 public class SkillValidation {
-    public Map<String, String> isSkillValid(SkillDto skillDto) {
+
+    public static Map<String, String> isSkillValid(SkillDto skillDto) {
         Map<String, String> errorMap = new HashMap<>();
         if (skillDto.getSkillName() == null) {
             errorMap.put("skillName", "Skill name cannot be null");

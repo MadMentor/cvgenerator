@@ -1,55 +1,54 @@
 package com.cvgenerator.cvg.service.impl;
 
+import com.cvgenerator.cvg.converter.SkillConverter;
 import com.cvgenerator.cvg.dto.SkillDto;
 import com.cvgenerator.cvg.entity.Skill;
 import com.cvgenerator.cvg.repo.SkillRepo;
 import com.cvgenerator.cvg.service.SkillService;
-import com.cvgenerator.cvg.utils.FileStoreUtils;
-import com.cvgenerator.cvg.utils.LocalDateUtils;
+import com.cvgenerator.cvg.validation.SkillValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class SkillServiceImpl implements SkillService {
     private final SkillRepo skillRepo;
+    private final SkillConverter skillConverter;
 
-    public SkillServiceImpl(SkillRepo skillRepo) {
+    public SkillServiceImpl(SkillRepo skillRepo, SkillConverter skillConverter) {
         this.skillRepo = skillRepo;
+        this.skillConverter = skillConverter;
     }
 
     @Override
     public SkillDto save(SkillDto skillDto) {
-        Skill entity = new Skill();
-        entity.setSkillId(skillDto.getSkillId());
-        entity.setSkillName(skillDto.getSkillName());
-        entity.setSkillType(skillDto.getSkillType());
-        entity.setSkillDescription(skillDto.getSkillDescription());
-        entity.setBasicInfoId(skillDto.getBasicInfoId());
-        try {
+        Map<String, String> map = SkillValidation.isSkillValid(skillDto);
+        if (map.isEmpty()) {
+            Skill entity = skillConverter.toEntity(skillDto);
             entity = skillRepo.save(entity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+            log.info("Skill saved with id: {}", entity.getSkillId());
+            return skillConverter.toDto(entity);
+        } else {
+            log.error("Invalid skillDto: {}", skillDto);
+            throw new RuntimeException("Error in request");
         }
-        return new SkillDto(entity.getSkillId());
     }
 
     @Override
     public SkillDto findById(Integer id) {
-        Optional<Skill> entity = skillRepo.findById(id);
-        if (entity.isPresent()) {
-            return new SkillDto(entity.get().getSkillId(),
-                    entity.get().getSkillType(),
-                    entity.get().getSkillName(),
-                    entity.get().getSkillDescription(),
-                    entity.get().getBasicInfoId());
+        Optional<Skill> optionalSkill = skillRepo.findById(id);
+        if (optionalSkill.isPresent()) {
+            Skill skill = optionalSkill.get();
+            return skillConverter.toDto(skill);
+        } else {
+            log.error("Invalid id: {}", id);
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -57,17 +56,19 @@ public class SkillServiceImpl implements SkillService {
         List<Skill> skillList = skillRepo.findAll();
         List<SkillDto> skillDtoList = new ArrayList<>();
         for (Skill skill : skillList) {
-            skillDtoList.add(new SkillDto(skill.getSkillId(),
-                    skill.getSkillType(),
-                    skill.getSkillName(),
-                    skill.getSkillDescription(),
-                    skill.getBasicInfoId()));
+            skillDtoList.add(skillConverter.toDto(skill));
         }
         return skillDtoList;
     }
 
     @Override
     public void deleteById(Integer id) {
-        skillRepo.deleteById(id);
+        Optional<Skill> optionalSkill = skillRepo.findById(id);
+        if (optionalSkill.isPresent()) {
+            skillRepo.deleteById(id);
+            log.info("Skill: {}", id);
+        } else {
+            log.error("Invalid ID: {}", id);
+        }
     }
 }
