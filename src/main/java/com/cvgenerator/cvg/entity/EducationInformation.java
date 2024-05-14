@@ -28,7 +28,7 @@ public class EducationInformation {
     @Column(name = "level_detail", nullable = false, length = 100)
     private String levelDetail;
     @Column(name = "division_or_grade", nullable = false, length = 12)
-    private String DivisionOrGrade;
+    private String divisionOrGrade;
     @Column(name = "from_year_date", nullable = false)
     private LocalDate fromYearDate;
     @Column(name = "to_year_date")
@@ -50,6 +50,4 @@ public class EducationInformation {
             )
     )
     private BasicInformation basicInformation;
-
-
 }

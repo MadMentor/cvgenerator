@@ -1,5 +1,6 @@
 package com.cvgenerator.cvg.dto;
 
+import com.cvgenerator.cvg.entity.BasicInformation;
 import com.cvgenerator.cvg.enums.EducationType;
 import com.cvgenerator.cvg.enums.Level;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class EducationInformationDto {
 
     private String levelDetail;
 
-    private String DivisionOrGrade;
+    private String divisionOrGrade;
 
     private String fromYearDate;
 
@@ -37,4 +38,6 @@ public class EducationInformationDto {
     public EducationInformationDto(Integer id) {
         this.id = id;
     }
+
+    private BasicInformation basicInformation;
 }

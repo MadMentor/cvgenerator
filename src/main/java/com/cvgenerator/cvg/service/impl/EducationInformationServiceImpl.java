@@ -51,8 +51,10 @@ public class EducationInformationServiceImpl implements EducationInformationServ
             entity.setToYearDate(localDateUtils.convertStringToDate(educationInformationDto.getToYearDate()));
 
         }
+        entity.setBasicInformation(educationInformationDto.getBasicInformation());
         entity.setEducationType(educationInformationDto.getEducationType());
         entity = educationInformationRepo.save(entity);
+
 
         return new EducationInformationDto(entity.getId());
     }
