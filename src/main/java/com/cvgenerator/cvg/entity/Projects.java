@@ -28,7 +28,7 @@ public class Projects {
     @Column(name = "is_running", nullable = false, length = 8)
     private Boolean isRunning;
 
-    @Column(name = "live_URL_path", length = 100)
+    @Column(name = "live_Url_path", length = 100)
     private String liveUrlPath;
 
     @Column(name = "tech_stack_used", nullable = false, length = 100)
