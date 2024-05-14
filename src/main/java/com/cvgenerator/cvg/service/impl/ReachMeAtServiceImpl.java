@@ -1,7 +1,7 @@
 package com.cvgenerator.cvg.service.impl;
 
+import com.cvgenerator.cvg.converter.ReachMeAtConverter;
 import com.cvgenerator.cvg.dto.ReachMeAtDto;
-import com.cvgenerator.cvg.entity.BasicInformation;
 import com.cvgenerator.cvg.entity.ReachMeAt;
 import com.cvgenerator.cvg.repo.BasicInformationRepo;
 import com.cvgenerator.cvg.repo.ReachMeAtRepo;
@@ -23,36 +23,26 @@ import java.util.Optional;
 @Service
 public class ReachMeAtServiceImpl implements ReachMeAtService {
     private final ReachMeAtRepo reachMeAtRepo;
-    private final BasicInformationRepo basicInformationRepo;
+    private final ReachMeAtConverter reachMeAtConverter;
 
-    public ReachMeAtServiceImpl(ReachMeAtRepo reachMeAtRepo, BasicInformationRepo basicInformationRepo) {
+    public ReachMeAtServiceImpl(ReachMeAtRepo reachMeAtRepo,
+                                ReachMeAtConverter reachMeAtConverter) {
         this.reachMeAtRepo = reachMeAtRepo;
-        this.basicInformationRepo = basicInformationRepo;
+        this.reachMeAtConverter = reachMeAtConverter;
     }
 
     @Override
     public ReachMeAtDto save(ReachMeAtDto reachMeAtDto) {
         Map<String, String> map = ReachMeAtValidation.validate(reachMeAtDto);
         if (map.isEmpty()) {
-            ReachMeAt entity = new ReachMeAt();
-            entity.setId(reachMeAtDto.getId());
-            entity.setContactType(reachMeAtDto.getContactType());
-            entity.setDetails(reachMeAtDto.getDetails());
-            Optional<BasicInformation> optionalBasicInformation = basicInformationRepo.findById(reachMeAtDto.getId());
-            if (optionalBasicInformation.isPresent()) {
-                BasicInformation basicInformation = optionalBasicInformation.get();
-                entity.setBasicInformationId(basicInformation);
-            } else {
-                log.info("BasicInformation not found");
-                return null;
-            }
-            reachMeAtRepo.save(entity);
+            ReachMeAt entity = reachMeAtConverter.toEntity(reachMeAtDto);
+            entity = reachMeAtRepo.save(entity);
             log.info("ReachMeAt saved with id: {}", entity.getId());
+            return reachMeAtConverter.toDto(entity);
         } else {
             log.info("Invalid reachMeAtDto: {}", reachMeAtDto);
+            throw new RuntimeException("Error in request");
         }
-
-        return null;
     }
 
     @Override
@@ -60,8 +50,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
         Optional<ReachMeAt> optionalReachMeAt = reachMeAtRepo.findById(integer);
         if (optionalReachMeAt.isPresent()) {
             ReachMeAt reachMeAt = optionalReachMeAt.get();
-            return new ReachMeAtDto(reachMeAt.getId(), reachMeAt.getContactType(), reachMeAt.getDetails()
-                    , reachMeAt.getBasicInformationId().getId());
+            return reachMeAtConverter.toDto(reachMeAt);
         } else {
             log.info("Invalid Id: {}", integer);
             return null;
@@ -73,8 +62,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
         List<ReachMeAt> reachMeAtList = reachMeAtRepo.findAll();
         List<ReachMeAtDto> reachMeAtDtoList = new ArrayList<>();
         for (ReachMeAt reachMeAt : reachMeAtList) {
-            reachMeAtDtoList.add(new ReachMeAtDto(reachMeAt.getId(), reachMeAt.getContactType(),
-                    reachMeAt.getDetails(), reachMeAt.getBasicInformationId().getId()));
+            reachMeAtDtoList.add(reachMeAtConverter.toDto(reachMeAt));
         }
         return reachMeAtDtoList;
     }
