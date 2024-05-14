@@ -14,7 +14,7 @@ import lombok.*;
 public class Projects {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer project_id;
+    private Integer projectId;
 
     @Column(name = "project_name", nullable = false, length = 100)
     private String projectName;
@@ -29,7 +29,7 @@ public class Projects {
     private Boolean isRunning;
 
     @Column(name = "live_URL_path", length = 100)
-    private String liveURLPath;
+    private String liveUrlPath;
 
     @Column(name = "tech_stack_used", nullable = false, length = 100)
     private String techStackUsed;

@@ -14,7 +14,7 @@ public class ProjectsValidation {
 
     public static Map<String, String> isProjectsValid(ProjectsDto projectsDto) {
         Map<String, String> errorMap = new HashMap<>();
-        if (projectsDto.getProject_id() == null) {
+        if (projectsDto.getProjectId() == null) {
             errorMap.put("id is null ", "Id cannot be null");
         } else if (projectsDto.getProjectName().isEmpty()) {
             errorMap.put("project is empty ","project name is mandatory");

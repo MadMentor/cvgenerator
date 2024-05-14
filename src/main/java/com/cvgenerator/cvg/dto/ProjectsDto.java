@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ProjectsDto {
 
 
-    private Integer project_id;
+    private Integer projectId;
 
     private String projectName;
 
@@ -25,13 +25,13 @@ public class ProjectsDto {
 
     private Boolean isRunning;
 
-    private String liveURLPath;
+    private String liveUrlPath;
 
     private String techStackUsed;
 
-    private Experience experience;
+    private Integer experienceId;
 
     public ProjectsDto(Integer projectId) {
-        this.project_id = projectId;
+        this.projectId= projectId;
     }
 }

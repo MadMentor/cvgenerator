@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ExperienceDto {
 
 
-    private Integer experience_id;
+    private Integer experienceId;
 
     private String companyName;
 
@@ -34,20 +34,12 @@ public class ExperienceDto {
 
     private Boolean isCurrent;
 
-    private BasicInformation basicInformation;
+    private Integer basicInformationId;
 
 
     public ExperienceDto(Integer experienceId) {
-        this.experience_id = experienceId;
+        this.experienceId = experienceId;
     }
 
-    public ExperienceDto(String companyName, String companyWebsite, String address, String contact, String jobRole, String position, BasicInformation basicInformation) {
-        this.companyName = companyName;
-        this.companyWebsite = companyWebsite;
-        this.address = address;
-        this.contact = contact;
-        this.jobRole = jobRole;
-        this.position = position;
-        this.basicInformation = basicInformation;
-    }
+
 }

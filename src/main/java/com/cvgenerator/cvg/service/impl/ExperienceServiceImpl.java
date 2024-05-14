@@ -1,7 +1,9 @@
 package com.cvgenerator.cvg.service.impl;
 
+import com.cvgenerator.cvg.converter.ExperienceConverter;
 import com.cvgenerator.cvg.dto.ExperienceDto;
 import com.cvgenerator.cvg.entity.Experience;
+import com.cvgenerator.cvg.entity.Projects;
 import com.cvgenerator.cvg.repo.ExperienceRepo;
 import com.cvgenerator.cvg.service.ExperienceService;
 import com.cvgenerator.cvg.utils.LocalDateUtils;
@@ -13,6 +15,7 @@ import javax.security.auth.kerberos.KerberosTicket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -20,61 +23,50 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     private final ExperienceRepo experienceRepo;
     private final LocalDateUtils localDateUtils;
+    private final ExperienceConverter experienceConverter;
 
 
-    public ExperienceServiceImpl(ExperienceRepo experienceRepo, LocalDateUtils localDateUtils) {
+    public ExperienceServiceImpl(ExperienceRepo experienceRepo, LocalDateUtils localDateUtils, ExperienceConverter experienceConverter) {
         this.experienceRepo = experienceRepo;
         this.localDateUtils = localDateUtils;
+        this.experienceConverter = experienceConverter;
     }
 
     @Override
     public ExperienceDto save(ExperienceDto experienceDto) {
 
+        /// for validation use only
         Map<String, String> errorMap = ExperienceValidation.isExperienceValid(experienceDto);
 
+        //if errorMap is empty then everything is fine and valid
         if (errorMap.isEmpty()) {
-            Experience entity = new Experience();
-            entity.setExperience_id(experienceDto.getExperience_id());
-            entity.setAddress(experienceDto.getAddress());
-            entity.setContact(experienceDto.getContact());
-            entity.setPosition(experienceDto.getPosition());
-            entity.setCompanyName(experienceDto.getCompanyName());
-            entity.setCompanyWebsite(experienceDto.getCompanyWebsite());
-            entity.setJobRole(experienceDto.getJobRole());
-            entity.setIsCurrent(experienceDto.getIsCurrent());
-            if (experienceDto.getIsCurrent()) {
-                entity.setStartDate(localDateUtils.convertStringToDate(experienceDto.getStartDate()));
-            } else {
-                entity.setStartDate(localDateUtils.convertStringToDate(experienceDto.getStartDate()));
-                entity.setEndDate(localDateUtils.convertStringToDate(experienceDto.getEndDate()));
-            }
-            entity.setBasicInformation(experienceDto.getBasicInformation());
+            Experience entity = experienceConverter.toEntity(experienceDto);
             entity = experienceRepo.save(entity);
 
-            log.info("Experience saved with id : {}", entity.getExperience_id());
+            log.info("Experience saved with id : {}", entity.getExperienceId());
 
-            return new ExperienceDto(entity.getExperience_id());
+            return experienceConverter.toDto(entity);
 
         } else {
-            log.info("Invalid experience information provided  : {}", experienceDto);
+            log.error("Invalid experience information provided  : {}", experienceDto);
+            throw new RuntimeException("Error in request");
 
         }
-        return null;
-
     }
 
     @Override
     public ExperienceDto findById(Integer id) {
 
-        Experience entity = experienceRepo.findById(id).get();
-        ExperienceDto experienceDto = new ExperienceDto(entity.getCompanyName(),
-                entity.getCompanyWebsite(),
-                entity.getAddress(),
-                entity.getContact(),
-                entity.getJobRole(),
-                entity.getPosition(),
-                entity.getBasicInformation());
-        return experienceDto;
+        // use Optional method to Rid of null Exception
+        Optional<Experience> optionalExperience = experienceRepo.findById(id);
+
+        if (optionalExperience.isPresent()) {
+            Experience experience = optionalExperience.get();
+            return experienceConverter.toDto(experience);
+        } else {
+            log.error("Invalid Id: {}", id);
+            return null;
+        }
     }
 
     @Override
@@ -82,22 +74,22 @@ public class ExperienceServiceImpl implements ExperienceService {
         List<Experience> experienceList = this.experienceRepo.findAll();
         List<ExperienceDto> experienceDtoList = new ArrayList<>();
 
+        //iterate every object of Experience
         for (Experience experience : experienceList) {
-            experienceDtoList.add(new ExperienceDto(experience.getCompanyName(),
-                    experience.getCompanyWebsite(),
-                    experience.getAddress(),
-                    experience.getContact(),
-                    experience.getJobRole(),
-                    experience.getPosition(),
-                    experience.getBasicInformation()));
+            experienceDtoList.add(experienceConverter.toDto(experience));
         }
-
         return experienceDtoList;
     }
 
     @Override
     public void deleteById(Integer id) {
-        this.experienceRepo.deleteById(id);
-    }
 
+        Optional<Experience> optionalExperience = experienceRepo.findById(id);
+        if (optionalExperience.isPresent()) {
+            experienceRepo.deleteById(id);
+            log.info("Successfully deleted with id :{}", id);
+        } else {
+            log.error("Invalid id: {}", id);
+        }
+    }
 }
