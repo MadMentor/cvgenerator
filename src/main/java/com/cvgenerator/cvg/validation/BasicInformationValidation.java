@@ -1,7 +1,6 @@
 package com.cvgenerator.cvg.validation;
 
 import com.cvgenerator.cvg.dto.BasicInformationDto;
-import com.cvgenerator.cvg.entity.BasicInformation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

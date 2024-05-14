@@ -1,0 +1,40 @@
+package com.cvgenerator.cvg.dto;
+
+import com.cvgenerator.cvg.enums.EducationType;
+import com.cvgenerator.cvg.enums.Level;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class EducationInformationDto {
+    private Integer id;
+
+    private String instituteName;
+
+    private String instituteAddress;
+
+    private Level level;
+
+    private String levelDetail;
+
+    private String DivisionOrGrade;
+
+    private String fromYearDate;
+
+    private String toYearDate;
+
+    private Boolean isRunning;
+
+    private EducationType educationType;
+
+    public EducationInformationDto(Integer id) {
+        this.id = id;
+    }
+}
