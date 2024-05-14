@@ -32,6 +32,4 @@ public class Skill {
             )
     )
     private Integer basicInfoId;
-
-
 }
