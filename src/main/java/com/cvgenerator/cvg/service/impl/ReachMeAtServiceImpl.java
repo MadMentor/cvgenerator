@@ -1,6 +1,7 @@
 package com.cvgenerator.cvg.service.impl;
 
 import com.cvgenerator.cvg.dto.ReachMeAtDto;
+import com.cvgenerator.cvg.entity.BasicInformation;
 import com.cvgenerator.cvg.entity.ReachMeAt;
 import com.cvgenerator.cvg.repo.BasicInformationRepo;
 import com.cvgenerator.cvg.repo.ReachMeAtRepo;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ReachMeAtServiceImpl
@@ -36,7 +38,14 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
             entity.setId(reachMeAtDto.getId());
             entity.setContactType(reachMeAtDto.getContactType());
             entity.setDetails(reachMeAtDto.getDetails());
-            entity.setBasicInformationId(basicInformationRepo.findById(reachMeAtDto.getBasicInformationId()).get());
+            Optional<BasicInformation> optionalBasicInformation = basicInformationRepo.findById(reachMeAtDto.getId());
+            if (optionalBasicInformation.isPresent()) {
+                BasicInformation basicInformation = optionalBasicInformation.get();
+                entity.setBasicInformationId(basicInformation);
+            } else {
+                log.info("BasicInformation not found");
+                return null;
+            }
             reachMeAtRepo.save(entity);
             log.info("ReachMeAt saved with id: {}", entity.getId());
         } else {
@@ -48,10 +57,15 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
 
     @Override
     public ReachMeAtDto findById(Integer integer) {
-        ReachMeAt entity = reachMeAtRepo.findById(integer).get();
-        ReachMeAtDto dto = new ReachMeAtDto(entity.getId(), entity.getContactType(), entity.getDetails(),
-                entity.getBasicInformationId().getId());
-        return dto;
+        Optional<ReachMeAt> optionalReachMeAt = reachMeAtRepo.findById(integer);
+        if (optionalReachMeAt.isPresent()) {
+            ReachMeAt reachMeAt = optionalReachMeAt.get();
+            return new ReachMeAtDto(reachMeAt.getId(), reachMeAt.getContactType(), reachMeAt.getDetails()
+                    , reachMeAt.getBasicInformationId().getId());
+        } else {
+            log.info("Invalid Id: {}", integer);
+            return null;
+        }
     }
 
     @Override
@@ -67,9 +81,12 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
 
     @Override
     public void deleteById(Integer integer) {
-        ReachMeAt reachMeAt = reachMeAtRepo.findById(integer).get();
-        reachMeAtRepo.delete(reachMeAt);
+        Optional<ReachMeAt> optionalReachMeAt = reachMeAtRepo.findById(integer);
+        if (optionalReachMeAt.isPresent()) {
+            reachMeAtRepo.deleteById(integer);
+            log.info("ReachMeAt deleted with id: {}", integer);
+        } else {
+            log.info("Invalid Id: {}", integer);
+        }
     }
-
-
 }
