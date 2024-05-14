@@ -1,76 +1,74 @@
 package com.cvgenerator.cvg.service.impl;
 
+import com.cvgenerator.cvg.converter.EducationInformationConverter;
 import com.cvgenerator.cvg.dto.EducationInformationDto;
 import com.cvgenerator.cvg.entity.EducationInformation;
 import com.cvgenerator.cvg.repo.EducationInformationRepo;
 import com.cvgenerator.cvg.service.EducationInformationService;
-import com.cvgenerator.cvg.utils.LocalDateUtils;
+import com.cvgenerator.cvg.validation.EducationInformationValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class EducationInformationServiceImpl implements EducationInformationService {
-
     private final EducationInformationRepo educationInformationRepo;
-    private final LocalDateUtils localDateUtils;
+    private final EducationInformationConverter educationInformationConverter;
 
-    public EducationInformationServiceImpl(EducationInformationRepo educationInformationRepo,
-                                           LocalDateUtils localDateUtils) {
+    public EducationInformationServiceImpl(EducationInformationRepo educationInformationRepo, EducationInformationConverter educationInformationConverter) {
         this.educationInformationRepo = educationInformationRepo;
-        this.localDateUtils = localDateUtils;
+        this.educationInformationConverter = educationInformationConverter;
     }
 
     @Override
     public EducationInformationDto save(EducationInformationDto educationInformationDto) {
-        EducationInformation entity = new EducationInformation();
-
-        entity.setId(educationInformationDto.getId());
-        entity.setInstituteName(educationInformationDto.getInstituteName());
-        entity.setInstituteAddress(educationInformationDto.getInstituteAddress());
-        entity.setLevel(educationInformationDto.getLevel());
-        entity.setLevelDetail(educationInformationDto.getLevelDetail());
-        entity.setDivisionOrGrade(educationInformationDto.getDivisionOrGrade());
-
-        // entity.setFromYearDate(localDateUtils.convertStringToDate(educationInformationDto.getFromYearDate()));
-        //if isRunning  then toYear date is not required.....
-        // entity.setToYearDate(localDateUtils.convertStringToDate(educationInformationDto.getToYearDate()));
-        entity.setIsRunning(educationInformationDto.getIsRunning());
-
-        // validation for isRunning .....
-        // if, is running is true then fromYearDate required and
-        // if , false then fromYearDate  and toYearDate both are required
-
-
-        if (entity.getIsRunning()) {
-            entity.setFromYearDate(localDateUtils.convertStringToDate(educationInformationDto.getFromYearDate()));
+        Map<String, String> validationError = EducationInformationValidation.validate(educationInformationDto);
+        if (validationError.isEmpty()) {
+            EducationInformation entity = educationInformationConverter.toEntity(educationInformationDto);
+            entity = educationInformationRepo.save(entity);
+            log.info("Education Information saved with id: {}", entity.getId());
+            return educationInformationConverter.toDto(entity);
         } else {
-            entity.setFromYearDate(localDateUtils.convertStringToDate(educationInformationDto.getFromYearDate()));
-            entity.setToYearDate(localDateUtils.convertStringToDate(educationInformationDto.getToYearDate()));
-
+            log.info("Invalid Education Information DTO: {}", educationInformationDto);
+            throw new RuntimeException("validation failed!!!");
         }
-        entity.setBasicInformation(educationInformationDto.getBasicInformation());
-        entity.setEducationType(educationInformationDto.getEducationType());
-        entity = educationInformationRepo.save(entity);
-
-
-        return new EducationInformationDto(entity.getId());
     }
 
     @Override
-    public EducationInformationDto findById(Integer integer) {
-        return null;
+    public EducationInformationDto findById(Integer id) {
+        Optional<EducationInformation> optionalEducationInformation = educationInformationRepo.findById(id);
+        if (optionalEducationInformation.isPresent()) {
+            EducationInformation educationInformation = optionalEducationInformation.get();
+            return educationInformationConverter.toDto(educationInformation);
+        } else {
+            log.info("Invalid Id: {}", id);
+            return null;
+        }
     }
 
     @Override
     public List<EducationInformationDto> findAll() {
-        return null;
+        List<EducationInformation> educationInformationList = educationInformationRepo.findAll();
+        List<EducationInformationDto> educationInformationDtoList = new ArrayList<>();
+        for (EducationInformation educationInformation : educationInformationList) {
+            educationInformationDtoList.add(educationInformationConverter.toDto(educationInformation));
+        }
+        return educationInformationDtoList;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-
+    public void deleteById(Integer id) {
+        Optional<EducationInformation> optionalEducationInformation = educationInformationRepo.findById(id);
+        if (optionalEducationInformation.isPresent()) {
+            educationInformationRepo.deleteById(id);
+            log.info("Education information deleted with id: {}", id);
+        } else {
+            log.info("Invalid Id: {}", id);
+        }
     }
 }

@@ -1,15 +1,20 @@
 package com.cvgenerator.cvg.service.impl;
 
+import com.cvgenerator.cvg.converter.BasicInformationConverter;
 import com.cvgenerator.cvg.dto.BasicInformationDto;
 import com.cvgenerator.cvg.entity.BasicInformation;
+import com.cvgenerator.cvg.entity.EducationInformation;
 import com.cvgenerator.cvg.repo.BasicInformationRepo;
 import com.cvgenerator.cvg.service.BasicInformationService;
 import com.cvgenerator.cvg.utils.FileStoreUtils;
 import com.cvgenerator.cvg.utils.LocalDateUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -17,15 +22,17 @@ public class BasicInformationServiceImpl implements BasicInformationService {
 
     private final BasicInformationRepo basicInformationRepo;
     private final FileStoreUtils fileStoreUtils;
-
     private final LocalDateUtils localDateUtils;
+    private final BasicInformationConverter basicInformationConverter;
 
     public BasicInformationServiceImpl(BasicInformationRepo basicInformationRepo,
                                        FileStoreUtils fileStoreUtils,
-                                       LocalDateUtils localDateUtils) {
+                                       LocalDateUtils localDateUtils,
+                                       BasicInformationConverter basicInformationConverter) {
         this.basicInformationRepo = basicInformationRepo;
         this.fileStoreUtils = fileStoreUtils;
         this.localDateUtils = localDateUtils;
+        this.basicInformationConverter = basicInformationConverter;
     }
 
     @Override
@@ -57,19 +64,30 @@ public class BasicInformationServiceImpl implements BasicInformationService {
     }
 
     @Override
-    public BasicInformationDto findById(Integer integer) {
-        //code
-        return null;
+    public BasicInformationDto findById(Integer id) {
+        Optional<BasicInformation> optionalBasicInformation = basicInformationRepo.findById(id);
+        if (optionalBasicInformation.isPresent()) {
+            BasicInformation basicInformation = optionalBasicInformation.get();
+            return basicInformationConverter.toDto(basicInformation);
+        } else {
+            log.info("Invalid Id: {}", id);
+            return null;
+        }
     }
 
     @Override
     public List<BasicInformationDto> findAll() {
-        // code
-        return null;
+        List<BasicInformation> basicInformationList = basicInformationRepo.findAll();
+        List<BasicInformationDto> basicInformationDtoList = new ArrayList<>();
+        for (BasicInformation basicInformation : basicInformationList) {
+            basicInformationDtoList.add(basicInformationConverter.toDto(basicInformation));
+        }
+        return basicInformationDtoList;
     }
 
     @Override
-    public void deleteById(Integer integer) {
-        // cod e
+    public void deleteById(Integer id) {
+        basicInformationRepo.deleteById(id);
+        log.info("Basic Information deleted with id: {}", id);
     }
 }

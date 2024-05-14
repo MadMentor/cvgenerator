@@ -39,5 +39,6 @@ public class EducationInformationDto {
         this.id = id;
     }
 
-    private BasicInformation basicInformation;
+    private Integer  basicInformationId;;
+
 }

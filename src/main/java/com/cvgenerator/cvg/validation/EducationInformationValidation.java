@@ -11,9 +11,9 @@ import java.util.Map;
 @Component
 public class EducationInformationValidation {
 
-    public Map<String, String> isEducationInformationValid(EducationInformationDto educationInformationDto) {
+    public  static Map<String, String> validate(EducationInformationDto educationInformationDto) {
         Map<String, String> errorMap = new HashMap<>();
-        if (educationInformationDto.getInstituteName() == null) {
+        if (educationInformationDto.getInstituteName().isEmpty()){
             errorMap.put("instituteName", "Institute Name cannot be null");
         }
         return errorMap;
