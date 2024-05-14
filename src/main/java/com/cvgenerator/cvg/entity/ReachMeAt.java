@@ -23,7 +23,7 @@ public class ReachMeAt {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "contact_type", nullable = false)
+    @Column(name = "contact_type", nullable = false, length = 14)
     private ContactType contactType;
 
     @Column(name = "details", nullable = false, length = 50)
@@ -32,4 +32,5 @@ public class ReachMeAt {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = BasicInformation.class)
     @JoinColumn(name = "basic_id", foreignKey = @ForeignKey(name = "fk_reachmeat_id"))
     private BasicInformation basicInformationId;
+
 }
