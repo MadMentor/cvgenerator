@@ -31,7 +31,5 @@ public class Skill {
                     name = "fk_skill_id"
             )
     )
-    private Integer basicInfoId;
-
-
+    private BasicInformation basicInformation;
 }
