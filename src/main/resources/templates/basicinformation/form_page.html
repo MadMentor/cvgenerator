@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Information</title>
+    <div th:replace="fragments/fragments.html:: css_fragment"></div>
+
+</head>
+<body>
+<div class="container">
+    <br>
+    <a th:href="@{~/basic-info}">
+        <button class="btn btn-primary"> Back</button>
+    </a>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-4">Blank</div>
+        <div class="col-md-4">
+            Basic Information
+            <hr>
+            <form th:action="@{~/basic-info/save}" th:object="${basicInformationDto}" enctype="multipart/form-data"
+                  method="POST">
+                <form>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" aria-describedby=""
+                               th:field="*{firstName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" aria-describedby=""
+                               th:field="*{middleName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" aria-describedby=""
+                               th:field="*{lastName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" id="dateOfBirth" aria-describedby=""
+                               th:field="*{dateOfBirth}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" aria-label="Default select example" th:field="*{gender}">
+                            <option disabled th:value="DISABLED">-- select gender --</option>
+                            <option th:each="gender: ${genderList}" th:value="${gender}" th:text="${gender}">
+                            </option>
+                        </select></div>
+                    <div class="mb-3">
+                        <label for="religion" class="form-label">Religion</label>
+                        <input type="text" class="form-control" id="religion" aria-describedby=""
+                               th:field="*{religion}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nationality" class="form-label">Nationality</label>
+                        <input type="text" class="form-control" id="nationality" aria-describedby=""
+                               th:field="*{nationality}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="currentAddress" class="form-label">Current Address</label>
+                        <input type="text" class="form-control" id="currentAddress" aria-describedby=""
+                               th:field="*{currentAddress}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="background" class="form-label">Background</label>
+                        <textarea rows="5" class="form-control" id="background" th:field="*{background}"
+                                  aria-describedby=""></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="photo" aria-describedby="" th:field="*{photoFile}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </form>
+
+        </div>
+        <div class="col-md-4">Blank</div>
+
+    </div>
+</div>
+
+</body>
+</html>
