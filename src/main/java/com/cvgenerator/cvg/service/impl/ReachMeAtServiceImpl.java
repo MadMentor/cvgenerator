@@ -74,7 +74,7 @@ public class ReachMeAtServiceImpl implements ReachMeAtService {
             reachMeAtRepo.deleteById(integer);
             log.info("ReachMeAt deleted with id: {}", integer);
         } else {
-            log.info("Invalid Id: {}", integer);
+            log.error("Invalid Id: {}", integer);
         }
     }
 }
