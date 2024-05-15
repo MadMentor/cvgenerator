@@ -13,7 +13,7 @@ public class ExperienceValidation {
 
     public static Map<String, String> isExperienceValid(ExperienceDto experienceDto) {
         Map<String, String> errorMap = new HashMap<>();
-        if (experienceDto.getExperience_id() == null) {
+        if (experienceDto.getExperienceId() == null) {
             errorMap.put("id is null ", "Id cannot be null");
         } else if (experienceDto.getCompanyName().isEmpty()) {
             errorMap.put("company name is empty ","company name is mandatory");
