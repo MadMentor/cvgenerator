@@ -27,7 +27,7 @@ public class SkillConverter extends AbstractConverter<SkillDto, Skill> {
                 .skillName(skill.getSkillName())
                 .skillType(skill.getSkillType())
                 .skillDescription(skill.getSkillDescription())
-                .basicInfoId(skill.getBasicInfoId().getId())
+                .basicInfoId(skill.getBasicInformation().getId())
                 .build();
     }
 
@@ -41,7 +41,7 @@ public class SkillConverter extends AbstractConverter<SkillDto, Skill> {
         Optional<BasicInformation> optionalBasicInformation = basicInformationRepo.findById(skillDto.getSkillId());
         if (optionalBasicInformation.isPresent()) {
             BasicInformation basicInformation = optionalBasicInformation.get();
-            entity.setBasicInfoId(basicInformation);
+            entity.setBasicInformation(basicInformation);
         } else {
             log.error("BasicInformation not found");
             throw new RuntimeException("Basic information not found!!");
