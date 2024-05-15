@@ -14,7 +14,7 @@ import lombok.*;
 public class Projects {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer project_id;
+    private Integer projectId;
 
     @Column(name = "project_name", nullable = false, length = 100)
     private String projectName;
@@ -22,14 +22,14 @@ public class Projects {
     @Column(name = "role_in_project", nullable = false, length = 50)
     private String roleInProject;
 
-    @Column(name = "description", nullable = false, length = 300)
+    @Column(name = "description", length = 300)
     private String description;
 
     @Column(name = "is_running", nullable = false, length = 8)
     private Boolean isRunning;
 
-    @Column(name = "live_URL_path", nullable = false, length = 100)
-    private String liveURLPath;
+    @Column(name = "live_Url_path", length = 100)
+    private String liveUrlPath;
 
     @Column(name = "tech_stack_used", nullable = false, length = 100)
     private String techStackUsed;

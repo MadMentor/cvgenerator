@@ -18,7 +18,7 @@ public class Experience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer experience_id;
+    private Integer experienceId;
 
     @Column(name = "company_name", nullable = false, length = 100)
     private String companyName;
