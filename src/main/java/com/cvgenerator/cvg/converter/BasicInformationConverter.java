@@ -43,6 +43,7 @@ public class BasicInformationConverter extends AbstractConverter<BasicInformatio
         entity.setLastName(basicInformationDto.getLastName());
         entity.setMiddleName(basicInformationDto.getMiddleName());
         entity.setDateOfBirth(localDateUtils.convertStringToDate(basicInformationDto.getDateOfBirth()));
+        entity.setGender(basicInformationDto.getGender());
         entity.setReligion(basicInformationDto.getReligion());
         entity.setNationality(basicInformationDto.getNationality());
         entity.setCurrentAddress(basicInformationDto.getCurrentAddress());
