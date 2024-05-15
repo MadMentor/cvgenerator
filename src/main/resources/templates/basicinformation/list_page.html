@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Information</title>
+    <div th:replace="fragments/fragments.html:: css_fragment"></div>
+
+</head>
+<body>
+<div class="container">
+    <br>
+    <a th:href="@{~/basic-info/open-form}">
+        <button class="btn btn-primary"> + Basic Info</button>
+    </a>
+    <br>
+    <br>
+    <div class="row">
+
+
+        <table class="table table-success table-striped">
+            <tr>
+                <th>SN</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Date Of Birth</th>
+            </tr>
+            <tr>
+                <td>SN</td>
+                <td>First Name</td>
+                <td>Middle Name</td>
+                <td>Last Name</td>
+                <td>Date Of Birth</td>
+            </tr>
+            <tr>
+                <td>SN</td>
+                <td>First Name</td>
+                <td>Middle Name</td>
+                <td>Last Name</td>
+                <td>Date Of Birth</td>
+            </tr>
+            <tr>
+                <td>SN</td>
+                <td>First Name</td>
+                <td>Middle Name</td>
+                <td>Last Name</td>
+                <td>Date Of Birth</td>
+            </tr>
+            <tr>
+                <td>SN</td>
+                <td>First Name</td>
+                <td>Middle Name</td>
+                <td>Last Name</td>
+                <td>Date Of Birth</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
