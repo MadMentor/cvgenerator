@@ -2,16 +2,18 @@ package com.cvgenerator.cvg.converter;
 
 import com.cvgenerator.cvg.dto.BasicInformationDto;
 import com.cvgenerator.cvg.entity.BasicInformation;
+import com.cvgenerator.cvg.utils.FileStoreUtils;
 import com.cvgenerator.cvg.utils.LocalDateUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BasicInformationConverter extends AbstractConverter<BasicInformationDto, BasicInformation> {
-
     private final LocalDateUtils localDateUtils;
+
 
     public BasicInformationConverter(LocalDateUtils localDateUtils) {
         this.localDateUtils = localDateUtils;
+
     }
 
     @Override
@@ -45,7 +47,8 @@ public class BasicInformationConverter extends AbstractConverter<BasicInformatio
         entity.setNationality(basicInformationDto.getNationality());
         entity.setCurrentAddress(basicInformationDto.getCurrentAddress());
         entity.setBackground(basicInformationDto.getBackground());
-        entity.setPhotoPath(basicInformationDto.getPhotoPath());
+
+       // entity.setPhotoPath(basicInformationDto.getPhotoPath());
         return entity;
     }
 }

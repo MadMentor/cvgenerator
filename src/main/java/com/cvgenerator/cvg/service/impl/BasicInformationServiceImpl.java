@@ -22,16 +22,14 @@ public class BasicInformationServiceImpl implements BasicInformationService {
 
     private final BasicInformationRepo basicInformationRepo;
     private final FileStoreUtils fileStoreUtils;
-    private final LocalDateUtils localDateUtils;
+
     private final BasicInformationConverter basicInformationConverter;
 
     public BasicInformationServiceImpl(BasicInformationRepo basicInformationRepo,
                                        FileStoreUtils fileStoreUtils,
-                                       LocalDateUtils localDateUtils,
                                        BasicInformationConverter basicInformationConverter) {
         this.basicInformationRepo = basicInformationRepo;
         this.fileStoreUtils = fileStoreUtils;
-        this.localDateUtils = localDateUtils;
         this.basicInformationConverter = basicInformationConverter;
     }
 
@@ -40,22 +38,10 @@ public class BasicInformationServiceImpl implements BasicInformationService {
         // data validation
         // TODO data validation
         // file validation
+        BasicInformation entity = basicInformationConverter.toEntity(basicInformationDto);
 
         // file store --> file path
         String photoFilePath = fileStoreUtils.uploadFile(basicInformationDto.getPhotoFile());
-        // DTO convertToEntity
-        BasicInformation entity
-                = new BasicInformation();
-        entity.setId(basicInformationDto.getId());
-        entity.setGender(basicInformationDto.getGender());
-        entity.setFirstName(basicInformationDto.getFirstName());
-        entity.setMiddleName(basicInformationDto.getMiddleName());
-        entity.setLastName(basicInformationDto.getLastName());
-        entity.setDateOfBirth(localDateUtils.convertStringToDate(basicInformationDto.getDateOfBirth()));
-        entity.setReligion(basicInformationDto.getReligion());
-        entity.setNationality(basicInformationDto.getNationality());
-        entity.setCurrentAddress(basicInformationDto.getCurrentAddress());
-        entity.setBackground(basicInformationDto.getBackground());
         entity.setPhotoPath(photoFilePath);
 
         entity = basicInformationRepo.save(entity);
